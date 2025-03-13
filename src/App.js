@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./styles.css";
 
 function Greeting({ name, age, carrera }) {
@@ -11,12 +12,20 @@ function Greeting({ name, age, carrera }) {
   );
 }
 //Todos los componentes de react deben empezar con letra mayuscula.
-function MyButton({ style, onClick }) {
+function MyButton({ style, parrafo }) {
   //!! Si quiero pasar estilos a un componente dentro de un react component tengo que AL HTML, pasarle el parametro style = {nombre del param para aplicar los estilos}.
   //Es necesaria un CSS APARTE del archivo jsx. Solamente se utiliza el css in line cuando dependen, ls estilos,  de una variable de js.
+  const [count, setcount] = useState(1);
+  //count = 0, porque es lo que le pase al usestate(0).
+  //setcount() es una funcion que actualiza el estado de count, y cambia su valor. En este caso le suma 1 a count
+  function handleClick() {
+    setcount(count + 1);
+    document.getElementById(parrafo).innerHTML = `Clicks count: ${count}`;
+  }
+  //Si yo invoco dos veces la funcion MyButton en mi App, los contadores van por separado. En este caso, tengo que especificar el id de donde quiero el contador.
   return (
     //Al yo quererle agregar un evento, tengoq ue poner en el elemento onEvent = {donde va la funcion a pasar}
-    <button className="boton" style={style} onClick={onClick}>
+    <button className="boton" style={style} onClick={handleClick}>
       I'm a botoncin
     </button>
   );
@@ -33,11 +42,7 @@ const button = {
   colorButton: "pink",
   borderRadius: "10px",
 };
-let i = 0;
-function handleClick() {
-  i += 1;
-  document.getElementById("clickContainer").innerHTML = `Clicks count: ${i}`;
-}
+
 //LISTAS
 const products = [
   { code: "mb24", type: "book", id: 1 },
@@ -71,10 +76,22 @@ export default function App() {
           backgroundColor: button.colorButton,
           borderRadius: button.borderRadius,
           border: button.colorButton,
+          margin: button.sizeOfButton,
         }}
-        onClick={handleClick}
+        parrafo="clickContainer"
+      />
+
+      <MyButton
+        style={{
+          padding: button.sizeOfButton,
+          backgroundColor: button.colorButton,
+          borderRadius: button.borderRadius,
+          border: button.colorButton,
+        }}
+        parrafo="buttonSecond"
       />
       <p id="clickContainer"></p>
+      <p id="buttonSecond"></p>
       <RenderList />
     </div>
   );
